@@ -1,0 +1,26 @@
+# Binaries
+/bin/
+*.exe
+*.test
+*.out
+
+# Go build/test artifacts
+*.prof
+
+# Env files with secrets
+.env
+.env.*
+!.env.example
+
+# IDE
+.idea/
+.vscode/
+*.swp
+
+# OS
+.DS_Store
+
+# Python (planning scripts)
+__pycache__/
+*.pyc
+
