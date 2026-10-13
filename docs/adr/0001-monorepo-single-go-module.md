@@ -26,7 +26,7 @@ one CI pipeline.
 ## Decision
 
 Single repo (monorepo), single Go module at the repo root
-(`github.com/victorlespinozas/monitoring-platform`), with this layout:
+(`github.com/viclespinozas/monitoring-platform`), with this layout:
 
 - `cmd/<service>/main.go` — one entrypoint per deployable binary (e.g.
   `cmd/service-registry`, `cmd/health-prober`, `cmd/processor`). Thin: wiring
