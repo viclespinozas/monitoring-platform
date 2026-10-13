@@ -20,6 +20,9 @@
 # OS
 .DS_Store
 
+# Per-card study notes (local only)
+/docs/history/
+
 # Python (planning scripts)
 __pycache__/
 *.pyc

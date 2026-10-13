@@ -1,0 +1,51 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  ci:
+    name: build-lint-test
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+
+      # Go module and build caches are restored and saved automatically.
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+
+      # Until the first service exists there is no Go source to lint or test.
+      - name: Detect Go packages
+        id: pkgs
+        run: |
+          if [ -n "$(find . -name '*.go' -not -path './.git/*' | head -1)" ]; then
+            echo "present=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "present=false" >> "$GITHUB_OUTPUT"
+            echo "No Go packages yet, skipping build, lint and test."
+          fi
+
+      - name: Build
+        if: steps.pkgs.outputs.present == 'true'
+        run: go build ./...
+
+      - name: Lint
+        if: steps.pkgs.outputs.present == 'true'
+        uses: golangci/golangci-lint-action@v8
+        with:
+          version: latest
+
+      - name: Test
+        if: steps.pkgs.outputs.present == 'true'
+        run: go test -race -cover ./...
