@@ -16,7 +16,7 @@ Sprint 1 cards US-05, US-07, US-06, US-08 are built as a stack of branches, each
 | US-04 Local stack with docker compose | Merged (PR #1) |
 | US-05 ADR process + first ADRs | In Code Review. Branch `feature/adr-process` (ADRs 0002 to 0004 + index) |
 | US-06 Service Registry CRUD API | Not started |
-| US-07 Postgres schema & migrations | Not started |
+| US-07 Postgres schema & migrations | In Code Review. Branch `feature/db-migrations` (goose, `services` table, pgx pool, CI job) |
 | US-08 Integration test harness (testcontainers-go) | Not started |
 
 ## Repo state
