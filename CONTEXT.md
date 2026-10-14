@@ -17,12 +17,12 @@ Sprint 1 cards US-05, US-07, US-06, US-08 are built as a stack of branches, each
 | US-05 ADR process + first ADRs | In Code Review. Branch `feature/adr-process` (ADRs 0002 to 0004 + index) |
 | US-06 Service Registry CRUD API | In Code Review. Branch `feature/service-registry-api` (REST API, OpenAPI, ADR-0006) |
 | US-07 Postgres schema & migrations | In Code Review. Branch `feature/db-migrations` (goose, `services` table, pgx pool, CI job) |
-| US-08 Integration test harness (testcontainers-go) | Not started |
+| US-08 Integration test harness (testcontainers-go) | In Code Review. Branch `feature/integration-tests` (Postgres only; Kafka helper comes with the first consumer) |
 
 ## Repo state
 - Public repo: https://github.com/viclespinozas/monitoring-platform, branch `main` protected (requires `build-lint-test`, branch up to date; admins not enforced).
 - Module path: `github.com/viclespinozas/monitoring-platform`.
-- Go code exists: `cmd/service-registry`, `internal/registry`, `internal/platform/{postgres,httpmw}`. CI build, lint, test and the migrations job all pass.
+- Go code exists: `cmd/service-registry`, `internal/registry`, `internal/platform/{postgres,httpmw}`. CI jobs: build-lint-test (required), migrations, integration.
 - Tooling installed: Go 1.27.1, `gh` (logged in as `viclespinozas`), Docker via OrbStack (must be running; `open -a OrbStack`). Not installed: `golangci-lint` (CI only).
 
 ## Open items
