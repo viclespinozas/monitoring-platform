@@ -1,4 +1,17 @@
-.PHONY: build test test-race test-cover lint fmt vet tidy run clean
+.PHONY: build test test-race test-cover lint fmt vet tidy run clean up down ps logs
+
+# Local stack (Postgres, Kafka, Redis, Kafka UI). `up` waits until all healthchecks pass.
+up:
+	docker compose up -d --wait
+
+down:
+	docker compose down
+
+ps:
+	docker compose ps
+
+logs:
+	docker compose logs -f --tail=100
 
 # Usage: make run SERVICE=service-registry
 SERVICE ?=
