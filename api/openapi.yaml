@@ -1,0 +1,230 @@
+openapi: 3.1.0
+info:
+  title: Service Registry API
+  version: 1.0.0
+  description: >
+    Register the services the platform monitors. Errors use RFC 9457
+    problem details (application/problem+json).
+servers:
+  - url: http://localhost:8080
+paths:
+  /api/v1/services:
+    post:
+      operationId: createService
+      summary: Register a service
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/ServiceInput" }
+      responses:
+        "201":
+          description: Created
+          headers:
+            Location:
+              schema: { type: string }
+              description: URL of the new service
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Service" }
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "409": { $ref: "#/components/responses/Conflict" }
+        "413": { $ref: "#/components/responses/TooLarge" }
+        "422": { $ref: "#/components/responses/ValidationFailed" }
+        "500": { $ref: "#/components/responses/InternalError" }
+    get:
+      operationId: listServices
+      summary: List services
+      parameters:
+        - name: team
+          in: query
+          schema: { type: string }
+          description: Only services owned by this team
+        - name: tag
+          in: query
+          schema: { type: string }
+          description: Only services carrying this tag
+        - name: limit
+          in: query
+          schema: { type: integer, minimum: 1, maximum: 100, default: 20 }
+          description: Page size. Values above 100 are clamped to 100.
+        - name: offset
+          in: query
+          schema: { type: integer, minimum: 0, default: 0 }
+      responses:
+        "200":
+          description: A page of services, ordered by creation time
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ServiceList" }
+        "422": { $ref: "#/components/responses/ValidationFailed" }
+        "500": { $ref: "#/components/responses/InternalError" }
+  /api/v1/services/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema: { type: string, format: uuid }
+    get:
+      operationId: getService
+      summary: Get a service
+      responses:
+        "200":
+          description: The service
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Service" }
+        "404": { $ref: "#/components/responses/NotFound" }
+        "500": { $ref: "#/components/responses/InternalError" }
+    put:
+      operationId: updateService
+      summary: Replace a service
+      description: Full replacement; omitted optional fields fall back to their defaults.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/ServiceInput" }
+      responses:
+        "200":
+          description: The updated service
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Service" }
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "404": { $ref: "#/components/responses/NotFound" }
+        "409": { $ref: "#/components/responses/Conflict" }
+        "413": { $ref: "#/components/responses/TooLarge" }
+        "422": { $ref: "#/components/responses/ValidationFailed" }
+        "500": { $ref: "#/components/responses/InternalError" }
+    delete:
+      operationId: deleteService
+      summary: Delete a service (soft delete)
+      description: The name becomes available for registration again.
+      responses:
+        "204": { description: Deleted }
+        "404": { $ref: "#/components/responses/NotFound" }
+        "500": { $ref: "#/components/responses/InternalError" }
+components:
+  schemas:
+    ServiceInput:
+      type: object
+      additionalProperties: false
+      required: [name, team, health_url]
+      properties:
+        name:
+          type: string
+          pattern: "^[a-z0-9]([a-z0-9-]{0,98}[a-z0-9])?$"
+          description: Unique among live services. Lowercase letters, digits, hyphens.
+          example: orders
+        team: { type: string, minLength: 1, maxLength: 100, example: core }
+        description: { type: string, maxLength: 500 }
+        tags:
+          type: array
+          maxItems: 20
+          items: { type: string, pattern: "^[a-z0-9][a-z0-9:_-]{0,49}$" }
+          example: [prod, "tier:1"]
+        health_url:
+          type: string
+          format: uri
+          description: Absolute http or https URL that is probed.
+          example: http://orders:8080/healthz
+        check_interval_seconds:
+          type: integer
+          minimum: 5
+          maximum: 3600
+          default: 30
+        timeout_seconds:
+          type: integer
+          minimum: 1
+          maximum: 300
+          default: 5
+          description: Must be smaller than check_interval_seconds.
+        expected_status:
+          type: integer
+          minimum: 100
+          maximum: 599
+          default: 200
+    Service:
+      type: object
+      required:
+        - id
+        - name
+        - team
+        - description
+        - tags
+        - health_url
+        - check_interval_seconds
+        - timeout_seconds
+        - expected_status
+        - created_at
+        - updated_at
+      properties:
+        id: { type: string, format: uuid }
+        name: { type: string }
+        team: { type: string }
+        description: { type: string }
+        tags: { type: array, items: { type: string } }
+        health_url: { type: string, format: uri }
+        check_interval_seconds: { type: integer }
+        timeout_seconds: { type: integer }
+        expected_status: { type: integer }
+        created_at: { type: string, format: date-time }
+        updated_at: { type: string, format: date-time }
+    ServiceList:
+      type: object
+      required: [items, total, limit, offset]
+      properties:
+        items:
+          type: array
+          items: { $ref: "#/components/schemas/Service" }
+        total: { type: integer, description: Number of services matching the filters }
+        limit: { type: integer }
+        offset: { type: integer }
+    Problem:
+      type: object
+      required: [type, title, status]
+      properties:
+        type: { type: string, example: "about:blank" }
+        title: { type: string }
+        status: { type: integer }
+        detail: { type: string }
+        errors:
+          type: array
+          items:
+            type: object
+            required: [field, message]
+            properties:
+              field: { type: string, example: name }
+              message: { type: string }
+  responses:
+    BadRequest:
+      description: Malformed JSON, unknown field or trailing data
+      content:
+        application/problem+json:
+          schema: { $ref: "#/components/schemas/Problem" }
+    NotFound:
+      description: No live service with this id
+      content:
+        application/problem+json:
+          schema: { $ref: "#/components/schemas/Problem" }
+    Conflict:
+      description: Another live service already uses this name
+      content:
+        application/problem+json:
+          schema: { $ref: "#/components/schemas/Problem" }
+    TooLarge:
+      description: Request body over 1 MiB
+      content:
+        application/problem+json:
+          schema: { $ref: "#/components/schemas/Problem" }
+    ValidationFailed:
+      description: One or more fields are invalid; errors lists each one
+      content:
+        application/problem+json:
+          schema: { $ref: "#/components/schemas/Problem" }
+    InternalError:
+      description: Unexpected failure; details are logged server-side only
+      content:
+        application/problem+json:
+          schema: { $ref: "#/components/schemas/Problem" }

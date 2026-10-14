@@ -1,4 +1,4 @@
-.PHONY: build test test-race test-cover lint fmt vet tidy run clean up down ps logs
+.PHONY: build test test-race test-cover test-integration lint fmt vet tidy run clean up down ps logs migrate-up migrate-down migrate-status migrate-new
 
 # Local stack (Postgres, Kafka, Redis, Kafka UI). `up` waits until all healthchecks pass.
 up:
@@ -13,8 +13,27 @@ ps:
 logs:
 	docker compose logs -f --tail=100
 
+migrate-up:
+	$(GOOSE) up
+
+migrate-down:
+	$(GOOSE) down
+
+migrate-status:
+	$(GOOSE) status
+
+# Usage: make migrate-new NAME=add_something
+migrate-new:
+	@if [ -z "$(NAME)" ]; then echo "usage: make migrate-new NAME=<name>"; exit 1; fi
+	go run github.com/pressly/goose/v3/cmd/goose@v3.29.0 -dir migrations create $(NAME) sql
+
 # Usage: make run SERVICE=service-registry
 SERVICE ?=
+
+# Database migrations (goose, pinned and run on demand, no go.mod dependency).
+# Defaults match docker-compose.yml; override DATABASE_URL for other databases.
+DATABASE_URL ?= postgres://monitoring:monitoring@localhost:5432/monitoring?sslmode=disable
+GOOSE := go run github.com/pressly/goose/v3/cmd/goose@v3.29.0 -dir migrations postgres "$(DATABASE_URL)"
 
 build:
 	go build ./...
@@ -28,6 +47,10 @@ test:
 
 test-race:
 	go test -race ./...
+
+# Needs Docker: testcontainers starts a throwaway Postgres per package.
+test-integration:
+	go test -race -tags=integration -count=1 ./...
 
 test-cover:
 	go test -race -coverprofile=coverage.out ./...
