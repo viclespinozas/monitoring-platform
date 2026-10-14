@@ -1,0 +1,5 @@
+version: "2"
+run:
+  # Lint the //go:build integration files too.
+  build-tags:
+    - integration

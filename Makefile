@@ -1,4 +1,4 @@
-.PHONY: build test test-race test-cover lint fmt vet tidy run clean up down ps logs migrate-up migrate-down migrate-status migrate-new
+.PHONY: build test test-race test-cover test-integration lint fmt vet tidy run clean up down ps logs migrate-up migrate-down migrate-status migrate-new
 
 # Local stack (Postgres, Kafka, Redis, Kafka UI). `up` waits until all healthchecks pass.
 up:
@@ -47,6 +47,10 @@ test:
 
 test-race:
 	go test -race ./...
+
+# Needs Docker: testcontainers starts a throwaway Postgres per package.
+test-integration:
+	go test -race -tags=integration -count=1 ./...
 
 test-cover:
 	go test -race -coverprofile=coverage.out ./...
