@@ -17,6 +17,7 @@ Cloud-Native Distributed Systems Monitoring Platform. Solo portfolio and intervi
 - Story cards already have an "Acceptance criteria" checklist. Never create another; read it (trelloReadChecklist) and tick items. The connector cannot delete checklists.
 - US-03 is the last card worked directly on `main`. From US-04 on, work on branches named `feature/<feature-name>`, Conventional Commits, one PR per story with the story ID in the title.
 - Repo is public on GitHub; `main` is protected and requires the `build-lint-test` CI check.
-- Only commit when the user asks.
+- **Sprint 2 onward (from 2026-10-19): the user writes the Go code, Claude only hints and suggests** (like their PHP SQL-injection mini project). Explain concepts, point at packages and functions, show small shapes of solutions, review what they wrote. Do not write the implementation. Claude still handles Trello, history notes, CLAUDE.md/CONTEXT.md, and git/PR mechanics. Sprint 1 was the exception: Claude implemented it all.
+- Only commit when the user asks (during Sprint 1 the user asked for commits, pushes and PRs per card).
 - After finishing every card: write `docs/history/US-XX-<slug>.md` titled "Here's what landed", then update `CONTEXT.md` (and this file if conventions changed).
 - Go 1.27.1 and `gh` installed via Homebrew (`gh` logged in as `viclespinozas`). `golangci-lint` is not installed locally; CI runs it.
