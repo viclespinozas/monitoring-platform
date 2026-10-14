@@ -21,3 +21,4 @@ the reasoning outlives anyone's memory.
 | [0003](0003-kafka-as-event-backbone.md) | Kafka as the event backbone | Accepted |
 | [0004](0004-postgres-as-system-of-record.md) | PostgreSQL as the system of record | Accepted |
 | [0005](0005-goose-migrations-and-soft-delete.md) | goose for migrations, soft delete for services | Accepted |
+| [0006](0006-http-api-conventions.md) | HTTP API conventions | Accepted |
