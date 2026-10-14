@@ -49,3 +49,34 @@ jobs:
       - name: Test
         if: steps.pkgs.outputs.present == 'true'
         run: go test -race -cover ./...
+
+  migrations:
+    name: migrations
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    services:
+      postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_USER: monitoring
+          POSTGRES_PASSWORD: monitoring
+          POSTGRES_DB: monitoring
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U monitoring -d monitoring"
+          --health-interval 5s
+          --health-timeout 3s
+          --health-retries 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+      # Proves every migration applies, rolls back and applies again on a clean database.
+      - name: Migrate up, down, up
+        run: |
+          make migrate-up
+          make migrate-down
+          make migrate-up
+          make migrate-status

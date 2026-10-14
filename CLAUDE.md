@@ -9,7 +9,7 @@ Cloud-Native Distributed Systems Monitoring Platform. Solo portfolio and intervi
 - `docs/history/` per-card "Here's what landed" summaries. Gitignored, never commit.
 
 ## Commands
-`make build | test | test-race | test-cover | lint | fmt | vet | tidy`, and `make run SERVICE=<name>`. Local stack: `make up | down | ps | logs` (Postgres 5432, Redis 6379, Kafka localhost:29092, Kafka UI http://localhost:8088; needs OrbStack running). `lint` uses golangci-lint if installed, otherwise only `go vet`.
+`make build | test | test-race | test-cover | lint | fmt | vet | tidy`, and `make run SERVICE=<name>`. Local stack: `make up | down | ps | logs` (Postgres 5432, Redis 6379, Kafka localhost:29092, Kafka UI http://localhost:8088; needs OrbStack running). Migrations: `make migrate-up | migrate-down | migrate-status | migrate-new NAME=x` (goose, files in `migrations/`, `DATABASE_URL` defaults to the compose DB). `lint` uses golangci-lint if installed, otherwise only `go vet`.
 
 ## Workflow rules
 - Trello flow: Sprint 1 Backlog -> In Progress -> Code Review -> Done. When a card is finished, move it to Code Review; the user reviews and moves it on.
