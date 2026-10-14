@@ -4,6 +4,8 @@ Current state of the project. Update after every finished card.
 
 _Last updated: 2026-10-14_
 
+Sprint 1 cards US-05, US-07, US-06, US-08 are built as a stack of branches, each branched from the previous one (adr-process -> migrations -> registry-api -> integration-tests). Each PR targets the previous branch; review and merge in that order.
+
 ## Sprint 1 (2026-10-05 to 2026-10-16): walking skeleton
 
 | Card | Status |
@@ -11,8 +13,8 @@ _Last updated: 2026-10-14_
 | US-01 Product vision, personas & MVP scope | In Code Review (`docs/vision.md`) |
 | US-02 Monorepo layout & Go module structure | In Code Review |
 | US-03 CI pipeline on GitHub Actions | In Code Review (workflow green, branch protection on) |
-| US-04 Local stack with docker compose | In Code Review. Branch `feature/local-stack`, work uncommitted, not pushed, no PR yet |
-| US-05 ADR process + first ADRs | Not started (template and ADR-0001 exist; still needs architecture, Kafka and Postgres ADRs) |
+| US-04 Local stack with docker compose | Merged (PR #1) |
+| US-05 ADR process + first ADRs | In Code Review. Branch `feature/adr-process` (ADRs 0002 to 0004 + index) |
 | US-06 Service Registry CRUD API | Not started |
 | US-07 Postgres schema & migrations | Not started |
 | US-08 Integration test harness (testcontainers-go) | Not started |
