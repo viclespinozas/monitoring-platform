@@ -40,7 +40,7 @@ Goal: health checks and uptime flowing through Kafka, idempotently. About 23 poi
 | US-12 Processing service: idempotent consumer | 8 | Manual offset commit after DB write, dedup with `ON CONFLICT DO NOTHING` on event_id, redelivery test, lag metric. Needs a Kafka test helper |
 | US-13 Uptime query API | 3 | `GET /api/v1/services/{id}/uptime?window=24h`; efficient query; edge-case tests |
 
-Trello: the Sprint 2 cards are still in "Product Backlog". The board has no Sprint 2 list yet and the Trello connector dropped out of the session on 2026-10-15, so they have not been moved. Pending: reconnect Trello, then move them (ask whether to reuse the empty "Sprint 1 Backlog" list or add a new one).
+Trello: the five Sprint 2 cards were moved out of Product Backlog on 2026-10-15 into the list still named "🎯 Sprint 1 Backlog" (the board has no Sprint 2 list and the connector cannot create or rename lists). The user may rename that list to "Sprint 2 Backlog". Cards have no acceptance-criteria checklist read yet; read it with trelloReadChecklist when starting each card.
 
 ## Open items
 - Naming: history notes live in `docs/history/` (gitignored) because `docs/` is already committed. Confirm or rename.
