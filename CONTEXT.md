@@ -2,11 +2,11 @@
 
 Current state of the project. Update after every finished card.
 
-_Last updated: 2026-10-14_
+_Last updated: 2026-10-15_
 
 ## Sprint 1 (2026-10-05 to 2026-10-16): walking skeleton
 
-All eight cards are implemented and merged into `main`. The Trello cards for US-01 to US-08 sit in Code Review until the user moves them to Done.
+All eight cards are implemented, merged into `main`, and moved to Done in Trello.
 
 | Card | Where it landed |
 |------|-----------------|
@@ -28,8 +28,21 @@ Sprint 1: Claude implemented every card. From Sprint 2 (2026-10-19) the user wri
 - Go code: `cmd/service-registry`, `internal/registry`, `internal/platform/{postgres,httpmw}`, `internal/testutil/postgrestest`. CI jobs: build-lint-test (required), migrations, integration; all green on `main`.
 - Tooling installed: Go 1.27.1, `gh` (logged in as `viclespinozas`), Docker via OrbStack (must be running; `open -a OrbStack`). Not installed: `golangci-lint` (CI only).
 
+## Sprint 2 (2026-10-19 to 2026-10-30): health checks and ingestion
+
+Goal: health checks and uptime flowing through Kafka, idempotently. About 23 points (target velocity 20 to 23). Hint mode: the user writes the code.
+
+| Card | Pts | Notes |
+|------|-----|-------|
+| US-11 Spike: Kafka client and event schema format | 2 | Do first. Compare franz-go, confluent-kafka-go, segmentio/kafka-go; JSON vs Protobuf; write ADR-0007. Timebox 1 day |
+| US-09 Health-check prober worker | 5 | Interval, timeout, expected status from the registry; bounded worker pool; graceful shutdown; jitter |
+| US-10 Publish check results to Kafka | 5 | Topic `check-results`, key = service_id, acks=all, idempotent producer, event has event_id, occurred_at, schema version |
+| US-12 Processing service: idempotent consumer | 8 | Manual offset commit after DB write, dedup with `ON CONFLICT DO NOTHING` on event_id, redelivery test, lag metric. Needs a Kafka test helper |
+| US-13 Uptime query API | 3 | `GET /api/v1/services/{id}/uptime?window=24h`; efficient query; edge-case tests |
+
+Trello: the Sprint 2 cards are still in "Product Backlog". The board has no Sprint 2 list yet and the Trello connector dropped out of the session on 2026-10-15, so they have not been moved. Pending: reconnect Trello, then move them (ask whether to reuse the empty "Sprint 1 Backlog" list or add a new one).
+
 ## Open items
-- Duplicate "Acceptance criteria" checklists on the US-01 and US-02 Trello cards (my mistake); the user needs to delete the second one on each by hand.
 - Naming: history notes live in `docs/history/` (gitignored) because `docs/` is already committed. Confirm or rename.
 - No Kafka code or Kafka test helper yet.
 
