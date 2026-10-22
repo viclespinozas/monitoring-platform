@@ -30,7 +30,7 @@ Sprint 1: Claude implemented every card. From Sprint 2 (2026-11-02) the user wri
 
 ## Sprint 2 (2026-11-02 to 2026-11-13): health checks and ingestion
 
-Moved two weeks later on 2026-10-22 (was 2026-10-19 to 2026-10-30) because the user started a new project for a job offer. Sprint 2 cards in Trello have new due dates (2026-11-13). Later sprints are not re-dated yet; see Open items.
+Moved two weeks later on 2026-10-22 (was 2026-10-19 to 2026-10-30) because the user started a new project for a job offer. Sprint 2 cards in Trello have new due dates (2026-11-13). Sprints 3 to 9 were shifted by the same two weeks on 2026-10-22: S3 Nov 16 to Nov 27, S4 Nov 30 to Dec 11, S5 Dec 14 to Dec 25, S6 Dec 28 to Jan 8, S7 Jan 11 to Jan 22, S8 Jan 25 to Feb 5, S9 Feb 8 to Feb 19 (2027). All story cards and the Trello "Sprint calendar & goals" card carry the new dates. `planning/create_trello_board.py` still has the original dates; it is only the one-off generator.
 
 Goal: health checks and uptime flowing through Kafka, idempotently. About 23 points (target velocity 20 to 23). Hint mode: the user writes the code.
 
@@ -45,7 +45,6 @@ Goal: health checks and uptime flowing through Kafka, idempotently. About 23 poi
 Trello: the five Sprint 2 cards were moved out of Product Backlog on 2026-10-15 into the list still named "🎯 Sprint 1 Backlog" (the board has no Sprint 2 list and the connector cannot create or rename lists). The user may rename that list to "Sprint 2 Backlog". Cards have no acceptance-criteria checklist read yet; read it with trelloReadChecklist when starting each card.
 
 ## Open items
-- Sprints 3 to 9 still carry the original dates (Sprint 3 would start 2026-11-02, overlapping the moved Sprint 2). Decide whether to shift them all by two weeks.
 - Naming: history notes live in `docs/history/` (gitignored) because `docs/` is already committed. Confirm or rename.
 - No Kafka code or Kafka test helper yet.
 
