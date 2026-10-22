@@ -2,7 +2,7 @@
 
 Current state of the project. Update after every finished card.
 
-_Last updated: 2026-10-15_
+_Last updated: 2026-10-22_
 
 ## Sprint 1 (2026-10-05 to 2026-10-16): walking skeleton
 
@@ -20,7 +20,7 @@ All eight cards are implemented, merged into `main`, and moved to Done in Trello
 | US-08 Integration test harness | `internal/testutil/postgrestest`, `*_integration_test.go` (PR #5, landed via #6). Postgres only; a Kafka helper comes with the first consumer |
 
 ## Working mode
-Sprint 1: Claude implemented every card. From Sprint 2 (2026-10-19) the user writes the Go code and Claude hints, reviews and explains, see CLAUDE.md.
+Sprint 1: Claude implemented every card. From Sprint 2 (2026-11-02) the user writes the Go code and Claude hints, reviews and explains, see CLAUDE.md.
 
 ## Repo state
 - Public repo: https://github.com/viclespinozas/monitoring-platform, branch `main` protected (requires `build-lint-test`, branch up to date; admins not enforced).
@@ -28,7 +28,9 @@ Sprint 1: Claude implemented every card. From Sprint 2 (2026-10-19) the user wri
 - Go code: `cmd/service-registry`, `internal/registry`, `internal/platform/{postgres,httpmw}`, `internal/testutil/postgrestest`. CI jobs: build-lint-test (required), migrations, integration; all green on `main`.
 - Tooling installed: Go 1.27.1, `gh` (logged in as `viclespinozas`), Docker via OrbStack (must be running; `open -a OrbStack`). Not installed: `golangci-lint` (CI only).
 
-## Sprint 2 (2026-10-19 to 2026-10-30): health checks and ingestion
+## Sprint 2 (2026-11-02 to 2026-11-13): health checks and ingestion
+
+Moved two weeks later on 2026-10-22 (was 2026-10-19 to 2026-10-30) because the user started a new project for a job offer. Sprint 2 cards in Trello have new due dates (2026-11-13). Later sprints are not re-dated yet; see Open items.
 
 Goal: health checks and uptime flowing through Kafka, idempotently. About 23 points (target velocity 20 to 23). Hint mode: the user writes the code.
 
@@ -43,8 +45,9 @@ Goal: health checks and uptime flowing through Kafka, idempotently. About 23 poi
 Trello: the five Sprint 2 cards were moved out of Product Backlog on 2026-10-15 into the list still named "🎯 Sprint 1 Backlog" (the board has no Sprint 2 list and the connector cannot create or rename lists). The user may rename that list to "Sprint 2 Backlog". Cards have no acceptance-criteria checklist read yet; read it with trelloReadChecklist when starting each card.
 
 ## Open items
+- Sprints 3 to 9 still carry the original dates (Sprint 3 would start 2026-11-02, overlapping the moved Sprint 2). Decide whether to shift them all by two weeks.
 - Naming: history notes live in `docs/history/` (gitignored) because `docs/` is already committed. Confirm or rename.
 - No Kafka code or Kafka test helper yet.
 
 ## Next suggested
-Sprint 2 (US-09 to US-13: health-check prober, Kafka publishing, Kafka client spike, idempotent consumer, uptime API) starts 2026-10-19 in hint mode. The spike (US-11) should come before US-10 and US-12, since it decides the Kafka client and event format.
+Sprint 2 (US-09 to US-13: health-check prober, Kafka publishing, Kafka client spike, idempotent consumer, uptime API) starts 2026-11-02 in hint mode. The spike (US-11) should come before US-10 and US-12, since it decides the Kafka client and event format.
